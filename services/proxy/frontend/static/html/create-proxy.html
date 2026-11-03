@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <script src="/static/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Добавить доверенность</title>
+</head>
+<body class="has-fixed-sidenav">
+    <header></header>
+    <main class="white">
+        <div class="container">
+            <div class="section">
+                <h5>Добавить доверенность</h5>
+                <form class="col s12" action="/documents/proxies/create" method="post">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label>Организация</label>
+                            <select name="organization_id" class="browser-default">
+                                <option value="" disabled selected>Выберите организацию</option>
+                                {{range .Organizations}}
+                                <option value="{{.Id}}">{{.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label>Сотрудник</label>
+                            <select name="employee_id" class="browser-default">
+                                <option value="" disabled selected>Выберите сотрудника</option>
+                                {{range .Employees}}
+                                <option value="{{.Id}}">{{.LastName}} {{.FirstName}} {{.MiddleName}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <div class="input-field col s6">
+                            <label>Контрагент (получение от)</label>
+                            <select name="customer_id" class="browser-default">
+                                <option value="" disabled selected>Выберите контрагента</option>
+                                {{range .Customers}}
+                                <option value="{{.Id}}">{{.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="date_of_issue" name="date_of_issue" type="date" class="validate">
+                            <label for="date_of_issue">Дата выдачи</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="is_valid_until" name="is_valid_until" type="date" class="validate">
+                            <label for="is_valid_until">Действительна до</label>
+                        </div>
+                    </div>
+                    <button class="waves-effect waves-blue btn-flat white blue-text" type="submit">
+                        <i class="material-icons left">done</i>Подтвердить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/sidenav.js"></script>
+    <script src="/documents/static/js/sidenav-proxy.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+@media print {
+    .print-only {
+        display: block;
+    }
+    .not-print {
+        display: none;
+    }
+    body.has-fixed-sidenav {
+        left: 0 !important;
+        padding-left: 0 !important;
+    }
+}

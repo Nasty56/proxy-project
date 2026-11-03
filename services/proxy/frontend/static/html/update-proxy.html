@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <script src="/static/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Обновить доверенность</title>
+</head>
+<body class="has-fixed-sidenav">
+    <header></header>
+    <main class="white">
+        <div class="container">
+            <div class="section">
+                <h5>Внести изменения в доверенность</h5>
+                <form class="col s12" action="/documents/proxies/update" method="post">
+                    <input id="proxy_id" name="id" type="hidden" value="{{.Proxy.ProxyHeader.Id}}">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label>Организация</label>
+                            <select name="organization_id" class="browser-default">
+                                {{$orgId := .Proxy.ProxyHeader.OrganizationId}}
+                                {{range .Organizations}}
+                                {{if eq .Id $orgId}}
+                                <option value="{{.Id}}" selected>{{.Name}}</option>
+                                {{else}}
+                                <option value="{{.Id}}">{{.Name}}</option>
+                                {{end}}
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label>Сотрудник</label>
+                            <select name="employee_id" class="browser-default">
+                                {{$empId := .Proxy.ProxyHeader.EmployeeId}}
+                                {{range .Employees}}
+                                {{if eq .Id $empId}}
+                                <option value="{{.Id}}" selected>{{.LastName}} {{.FirstName}} {{.MiddleName}}</option>
+                                {{else}}
+                                <option value="{{.Id}}">{{.LastName}} {{.FirstName}} {{.MiddleName}}</option>
+                                {{end}}
+                                {{end}}
+                            </select>
+                        </div>
+                        <div class="input-field col s6">
+                            <label>Контрагент</label>
+                            <select name="customer_id" class="browser-default">
+                                {{$custId := .Proxy.ProxyHeader.CustomerId}}
+                                {{range .Customers}}
+                                {{if eq .Id $custId}}
+                                <option value="{{.Id}}" selected>{{.Name}}</option>
+                                {{else}}
+                                <option value="{{.Id}}">{{.Name}}</option>
+                                {{end}}
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="date_of_issue" name="date_of_issue" type="date" value="{{.Proxy.ProxyHeader.DateOfIssue}}" class="validate">
+                            <label for="date_of_issue">Дата выдачи</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="is_valid_until" name="is_valid_until" type="date" value="{{.Proxy.ProxyHeader.IsValidUntil}}" class="validate">
+                            <label for="is_valid_until">Действительна до</label>
+                        </div>
+                    </div>
+                    <button class="waves-effect waves-blue btn-flat white blue-text" type="submit">
+                        <i class="material-icons left">done</i>Подтвердить
+                    </button>
+                </form>
+
+                <h5>Товары в доверенности</h5>
+                <table class="highlight">
+                    <thead>
+                        <th>Наименование</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th></th>
+                    </thead>
+                    {{range .ProxyBodyItems}}
+                    <tr>
+                        <td>{{.Name}}</td>
+                        <td>{{.Price}}</td>
+                        <td>{{.ProductAmount}}</td>
+                        <td>
+                            <form action="/documents/proxies/body/delete" method="post" class="col">
+                                <input name="item_id" type="hidden" value="{{.Id}}">
+                                <input name="proxy_id" type="hidden" value="{{$.Proxy.ProxyHeader.Id}}">
+                                <button type="submit" class="btn-floating z-depth-0 waves-effect waves-light">
+                                    <i class="material-icons red">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{end}}
+                </table>
+                <a class="waves-effect waves-blue btn-flat white blue-text" href="/documents/proxies/{{.Proxy.ProxyHeader.Id}}/body/create">
+                    <i class="material-icons left">add</i>Добавить товар
+                </a>
+            </div>
+        </div>
+    </main>
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/sidenav.js"></script>
+    <script src="/documents/static/js/sidenav-proxy.js"></script>
+</body>
+</html>
